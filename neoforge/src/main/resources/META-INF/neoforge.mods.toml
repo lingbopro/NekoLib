@@ -11,7 +11,7 @@ authors = "lingbopro"
 description = '''
 Lightweight but powerful common library by lingbopro. UI, config, and more! (^・ω・^)
 '''
-#logoFile = ""
+logoFile = "assets/nekolib/icon.png"
 
 [[dependencies.nekolib]]
 modId = "neoforge"
