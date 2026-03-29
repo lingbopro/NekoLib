@@ -1,0 +1,38 @@
+modLoader = "javafml"
+loaderVersion = "[2,)"
+#issueTrackerURL = ""
+license = "GNU LGPL 3.0"
+
+[[mods]]
+modId = "nekolib"
+version = "${version}"
+displayName = "NekoLib"
+authors = "lingbopro"
+description = '''
+Lightweight but powerful common library by lingbopro. UI, config, and more! (^・ω・^)
+'''
+#logoFile = ""
+
+[[dependencies.nekolib]]
+modId = "neoforge"
+type = "required"
+versionRange = "[21,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.nekolib]]
+modId = "minecraft"
+type = "required"
+versionRange = "[1.21.11,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.nekolib]]
+modId = "architectury"
+type = "required"
+versionRange = "[19.0.1,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[mixins]]
+config = "nekolib.mixins.json"
