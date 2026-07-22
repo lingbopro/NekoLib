@@ -3,12 +3,14 @@
   "id": "nekolib",
   "version": "${version}",
   "name": "NekoLib",
-  "description": "",
+  "description": "Common library by lingbopro. UI, config, and more!",
   "authors": [
     "lingbopro"
   ],
   "contact": {
-    "homepage": "https://example.com"
+    "homepage": "https://github.com/lingbopro/NekoLib",
+    "issues": "https://github.com/lingbopro/NekoLib/issues",
+    "sources": "https://github.com/lingbopro/NekoLib"
   },
   "license": "LGPL-3.0",
   "icon": "assets/nekolib/icon.png",
@@ -31,7 +33,5 @@
     "architectury": ">=19.0.1",
     "fabric-api": "*"
   },
-  "suggests": {
-    "another-mod": "*"
-  }
+  "suggests": {}
 }
