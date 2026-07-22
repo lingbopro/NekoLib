@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "nekolib",
+  "version": "${version}",
+  "name": "NekoLib",
+  "description": "",
+  "authors": [
+    "lingbopro"
+  ],
+  "contact": {
+    "homepage": "https://example.com"
+  },
+  "license": "LGPL-3.0",
+  "icon": "assets/nekolib/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "me.lingbopro.nekolib.fabric.NekolibFabric"
+    ],
+    "client": [
+      "me.lingbopro.nekolib.fabric.client.NekolibFabricClient"
+    ]
+  },
+  "mixins": [
+    "nekolib.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.19.3",
+    "minecraft": "~1.21.11",
+    "java": ">=21",
+    "architectury": ">=19.0.1",
+    "fabric-api": "*"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}
