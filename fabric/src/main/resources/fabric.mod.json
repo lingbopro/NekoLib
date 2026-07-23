@@ -21,7 +21,8 @@
     ],
     "client": [
       "me.lingbopro.nekolib.fabric.client.NekolibFabricClient"
-    ]
+    ],
+    "modmenu": ["me.lingbopro.nekolib.fabric.client.ModMenuApiImpl"]
   },
   "mixins": [
     "nekolib.mixins.json"
