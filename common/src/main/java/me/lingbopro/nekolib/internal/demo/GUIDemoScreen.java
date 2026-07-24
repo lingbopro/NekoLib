@@ -1,9 +1,11 @@
 package me.lingbopro.nekolib.internal.demo;
 
-import me.lingbopro.nekolib.api.gui.LayoutProperties;
+import me.lingbopro.nekolib.api.gui.ComponentLike;
 import me.lingbopro.nekolib.api.gui.NScreen;
-import me.lingbopro.nekolib.api.gui.components.Flexbox;
-import net.minecraft.client.gui.components.AbstractWidget;
+import me.lingbopro.nekolib.api.gui.State;
+import me.lingbopro.nekolib.api.gui.components.base.ContentBox;
+import me.lingbopro.nekolib.api.gui.components.base.Flexbox;
+import me.lingbopro.nekolib.api.gui.components.base.NativeWrap;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -14,25 +16,59 @@ public class GUIDemoScreen extends NScreen {
         super(parent);
     }
 
-    @Override
-    protected AbstractWidget build() {
-        return new Flexbox(0, 0, 0, 0, Component.empty())
-                .setDirection(Flexbox.FlexDirection.ROW)
-                .addChild(new Flexbox(0, 0, 0, 0, Component.empty())
-                                .setDirection(Flexbox.FlexDirection.COLUMN)
-                                .addChild(Button.builder(Component.literal("Button"), button -> {
-                                        }).build(),
-                                        new LayoutProperties().setMargin(10))
-                                .addChild(Button.builder(Component.literal("Button 2"), button -> {
-                                        }).size(50, 20).build(),
-                                        new LayoutProperties().setMargin(10)),
-                        new LayoutProperties().setMargin(10))
-                .addChild(new Flexbox(0, 0, 0, 0, Component.empty())
-                        .addChild(Button.builder(Component.literal("Button 3"), button -> {
-                                }).build()));
-    }
+    private final State<Boolean> clamp = useState(false);
+    private final State<Flexbox.FlexDirection> direction = useState(Flexbox.FlexDirection.ROW);
+    private final State<Integer> count = useState(0);
 
-    private void emptyFn() {
+    @Override
+    protected ComponentLike build() {
+        return new Flexbox(Flexbox.FlexDirection.COLUMN)
+                .addChild(
+                        new Flexbox()
+                                .addChild(new NativeWrap<>(
+                                        Button.builder(Component.literal("Toggle Clamp"), button -> {
+                                            clamp.set(!clamp.get());
+                                        }).build()
+                                ))
+                                .addChild(new NativeWrap<>(
+                                        Button.builder(Component.literal("Toggle Flex Direction"), button -> {
+                                            direction.set(direction.get() == Flexbox.FlexDirection.ROW ? Flexbox.FlexDirection.COLUMN : Flexbox.FlexDirection.ROW);
+                                        }).build()
+                                ))
+                                .addChild(new NativeWrap<>(
+                                        Button.builder(Component.literal("Count: " + count.get()), button -> {
+                                            count.set(count.get() + 1);
+                                        }).build()
+                                ))
+                )
+                .addChild(new ContentBox()
+                        .padding(10)
+                        .maxWidth(clamp.get() ? 250 : Integer.MAX_VALUE)
+                        .addChild(new Flexbox(direction.get())
+                                .addChild(new NativeWrap<>(
+                                        Button.builder(Component.literal("Button 1"), button -> {
+                                        }).build()))
+                                .addChild(new NativeWrap<>(
+                                        Button.builder(Component.literal("Button 2"), button -> {
+                                        }).build()))
+                                .addChild(new NativeWrap<>(
+                                        Button.builder(Component.literal("Button 3"), button -> {
+                                        }).build()))
+                        ))
+                .addChild(new ContentBox()
+                        .padding(10)
+                        .maxHeight(clamp.get() ? 20 : Integer.MAX_VALUE)
+                        .addChild(new Flexbox()
+                                .addChild(new NativeWrap<>(
+                                        Button.builder(Component.literal("Button 4"), button -> {
+                                        }).build()))
+                                .addChild(new NativeWrap<>(
+                                        Button.builder(Component.literal("Button 5"), button -> {
+                                        }).build()))
+                                .addChild(new NativeWrap<>(
+                                        Button.builder(Component.literal("Button 6"), button -> {
+                                        }).build()))
+                        ));
     }
 
     @Override
