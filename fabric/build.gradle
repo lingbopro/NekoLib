@@ -41,8 +41,16 @@ dependencies {
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
     shadowBundle project(path: ':common', configuration: 'transformProductionFabric')
 
+    // gson
+    implementation 'com.google.code.gson:gson:2.14.0'
+
+    mappings loom.layered() {
+        officialMojangMappings()
+        parchment("org.parchmentmc.data:parchment-1.21.11:2025.12.20@zip")
+    }
+
     // Mod Menu
-    modImplementation("com.terraformersmc:modmenu:${project.modmenu_version}")
+    modCompileOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
 }
 
 processResources {
