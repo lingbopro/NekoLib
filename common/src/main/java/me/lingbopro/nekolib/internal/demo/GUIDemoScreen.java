@@ -5,6 +5,7 @@ import me.lingbopro.nekolib.api.gui.NScreen;
 import me.lingbopro.nekolib.api.gui.State;
 import me.lingbopro.nekolib.api.gui.components.base.ContentBox;
 import me.lingbopro.nekolib.api.gui.components.base.Flexbox;
+import me.lingbopro.nekolib.api.gui.components.base.Label;
 import me.lingbopro.nekolib.api.gui.components.base.NativeWrap;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
@@ -25,6 +26,9 @@ public class GUIDemoScreen extends NScreen {
         return new Flexbox(Flexbox.FlexDirection.COLUMN)
                 .addChild(
                         new Flexbox()
+                                .addChild(new ContentBox()
+                                        .padding(10)
+                                        .addChild(new Label("NekoLib GUI API Demo")))
                                 .addChild(new NativeWrap<>(
                                         Button.builder(Component.literal("Toggle Clamp"), button -> {
                                             clamp.set(!clamp.get());
