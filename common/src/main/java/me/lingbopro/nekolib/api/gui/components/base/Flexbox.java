@@ -15,6 +15,7 @@ public class Flexbox extends ContainerWidget {
     private int height;
     private int x;
     private int y;
+    protected boolean needsRelayout = true;
 
     public Flexbox() {
         super();
@@ -42,20 +43,13 @@ public class Flexbox extends ContainerWidget {
         return this;
     }
 
-    @Override
-    public Flexbox addChild(ComponentLike child) {
-        return (Flexbox) super.addChild(child);
-    }
-
-    @Override
-    public void buildNative(NativeBuildContext context) {
+    protected void relayout() {
         if (flexDirection == FlexDirection.ROW) {
             int relX = 0;
             int containerHeight = 0;
             for (ComponentLike child : children) {
                 child.setX(x + relX);
                 child.setY(y);
-                child.buildNative(context);
                 relX += child.getWidth();
                 if (child.getHeight() > containerHeight) containerHeight = child.getHeight();
             }
@@ -67,13 +61,31 @@ public class Flexbox extends ContainerWidget {
             for (ComponentLike child : children) {
                 child.setX(x);
                 child.setY(y + relY);
-                child.buildNative(context);
                 relY += child.getHeight();
                 if (child.getWidth() > containerWidth) containerWidth = child.getWidth();
             }
             width = containerWidth;
             height = relY;
         } else throw new IllegalStateException("Invalid FlexDirection");
+    }
+
+    protected void relayoutIfNeeded() {
+        if (needsRelayout) relayout();
+        needsRelayout = false;
+    }
+
+    @Override
+    public Flexbox addChild(ComponentLike child) {
+        needsRelayout = true;
+        return (Flexbox) super.addChild(child);
+    }
+
+    @Override
+    public void buildNative(NativeBuildContext context) {
+        relayoutIfNeeded();
+        for (ComponentLike child : children) {
+            child.buildNative(context);
+        }
     }
 
     @Override
@@ -86,11 +98,13 @@ public class Flexbox extends ContainerWidget {
     //region Size and Position
     @Override
     public int getWidth() {
+        relayoutIfNeeded();
         return width;
     }
 
     @Override
     public int getHeight() {
+        relayoutIfNeeded();
         return height;
     }
 

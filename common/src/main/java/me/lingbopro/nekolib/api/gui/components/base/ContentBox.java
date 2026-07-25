@@ -16,6 +16,7 @@ public class ContentBox extends ContainerWidget {
     public int height = 0;
     private int x;
     private int y;
+    protected boolean needsRelayout = true;
 
     public ContentBox() {
         super();
@@ -33,19 +34,12 @@ public class ContentBox extends ContainerWidget {
         }
     }
 
-    @Override
-    public ContentBox addChild(ComponentLike child) {
-        return (ContentBox) super.addChild(child);
-    }
-
-    @Override
-    public void buildNative(NativeBuildContext context) {
+    protected void relayout() {
         int childMaxW = 0;
         int childMaxH = 0;
         for (ComponentLike child : children) {
             child.setX(properties.paddingLeft + x);
             child.setY(properties.paddingTop + y);
-            child.buildNative(context);
             childMaxW = Math.max(childMaxW, child.getWidth());
             childMaxH = Math.max(childMaxH, child.getHeight());
         }
@@ -54,6 +48,25 @@ public class ContentBox extends ContainerWidget {
         int h = properties.paddingTop + childMaxH + properties.paddingBottom;
         width = Math.clamp(w, properties.minWidth, properties.maxWidth);
         height = Math.clamp(h, properties.minHeight, properties.maxHeight);
+    }
+
+    protected void relayoutIfNeeded() {
+        if (needsRelayout) relayout();
+        needsRelayout = false;
+    }
+
+    @Override
+    public ContentBox addChild(ComponentLike child) {
+        needsRelayout = true;
+        return (ContentBox) super.addChild(child);
+    }
+
+    @Override
+    public void buildNative(NativeBuildContext context) {
+        relayoutIfNeeded();
+        for (ComponentLike child : children) {
+            child.buildNative(context);
+        }
     }
 
     @Override
@@ -75,11 +88,13 @@ public class ContentBox extends ContainerWidget {
     //region Size and Position
     @Override
     public int getWidth() {
+        relayoutIfNeeded();
         return width;
     }
 
     @Override
     public int getHeight() {
+        relayoutIfNeeded();
         return height;
     }
 
