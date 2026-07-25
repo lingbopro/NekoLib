@@ -11,20 +11,23 @@ import org.jspecify.annotations.NonNull;
  * <p>It can be used to create custom margin and size constraints for its children.</p>
  */
 public class ContentBox extends ContainerWidget {
-    public BoxProperties properties = new BoxProperties();
     public int width = 0;
     public int height = 0;
     private int x;
     private int y;
     protected boolean needsRelayout = true;
 
+    public int paddingTop = 0;
+    public int paddingRight = 0;
+    public int paddingBottom = 0;
+    public int paddingLeft = 0;
+    public int maxWidth = Integer.MAX_VALUE;
+    public int maxHeight = Integer.MAX_VALUE;
+    public int minWidth = 0;
+    public int minHeight = 0;
+
     public ContentBox() {
         super();
-    }
-
-    public ContentBox(BoxProperties properties) {
-        super();
-        this.properties = properties;
     }
 
     public ContentBox(ComponentLike... children) {
@@ -38,16 +41,16 @@ public class ContentBox extends ContainerWidget {
         int childMaxW = 0;
         int childMaxH = 0;
         for (ComponentLike child : children) {
-            child.setX(properties.paddingLeft + x);
-            child.setY(properties.paddingTop + y);
+            child.setX(paddingLeft + x);
+            child.setY(paddingTop + y);
             childMaxW = Math.max(childMaxW, child.getWidth());
             childMaxH = Math.max(childMaxH, child.getHeight());
         }
 
-        int w = properties.paddingLeft + childMaxW + properties.paddingRight;
-        int h = properties.paddingTop + childMaxH + properties.paddingBottom;
-        width = Math.clamp(w, properties.minWidth, properties.maxWidth);
-        height = Math.clamp(h, properties.minHeight, properties.maxHeight);
+        int w = paddingLeft + childMaxW + paddingRight;
+        int h = paddingTop + childMaxH + paddingBottom;
+        width = Math.clamp(w, minWidth, maxWidth);
+        height = Math.clamp(h, minHeight, maxHeight);
     }
 
     protected void relayoutIfNeeded() {
@@ -71,9 +74,9 @@ public class ContentBox extends ContainerWidget {
 
     @Override
     public void renderNative(@NonNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        boolean scissorEnabled = properties.maxHeight < Integer.MAX_VALUE || properties.maxWidth < Integer.MAX_VALUE;
-        int scissorWidth = properties.maxWidth < Integer.MAX_VALUE ? properties.maxWidth : width;
-        int scissorHeight = properties.maxHeight < Integer.MAX_VALUE ? properties.maxHeight : height;
+        boolean scissorEnabled = maxHeight < Integer.MAX_VALUE || maxWidth < Integer.MAX_VALUE;
+        int scissorWidth = maxWidth < Integer.MAX_VALUE ? maxWidth : width;
+        int scissorHeight = maxHeight < Integer.MAX_VALUE ? maxHeight : height;
         if (scissorEnabled) {
             guiGraphics.enableScissor(x, y, x + scissorWidth, y + scissorHeight);
         }
@@ -121,90 +124,39 @@ public class ContentBox extends ContainerWidget {
 
     //region Properties setter
     public ContentBox padding(int paddingAll) {
-        properties.setPadding(paddingAll);
-        return this;
+        return padding(paddingAll, paddingAll, paddingAll, paddingAll);
     }
 
     public ContentBox padding(int paddingVertical, int paddingHorizontal) {
-        properties.setPadding(paddingVertical, paddingHorizontal);
-        return this;
+        return padding(paddingVertical, paddingHorizontal, paddingVertical, paddingHorizontal);
     }
 
     public ContentBox padding(int paddingTop, int paddingRight, int paddingBottom, int paddingLeft) {
-        properties.setPadding(paddingTop, paddingRight, paddingBottom, paddingLeft);
+        this.paddingTop = paddingTop;
+        this.paddingRight = paddingRight;
+        this.paddingBottom = paddingBottom;
+        this.paddingLeft = paddingLeft;
         return this;
     }
 
     public ContentBox maxWidth(int maxWidth) {
-        properties.setMaxWidth(maxWidth);
+        this.maxWidth = maxWidth;
         return this;
     }
 
     public ContentBox maxHeight(int maxHeight) {
-        properties.setMaxHeight(maxHeight);
+        this.maxHeight = maxHeight;
         return this;
     }
 
     public ContentBox minWidth(int minWidth) {
-        properties.setMinWidth(minWidth);
+        this.minWidth = minWidth;
         return this;
     }
 
     public ContentBox minHeight(int minHeight) {
-        properties.setMinHeight(minHeight);
+        this.minHeight = minHeight;
         return this;
     }
     //endregion
-
-    /**
-     * <p>The layout properties of the ContentBox.</p>
-     */
-    public static class BoxProperties {
-        public int paddingTop = 0;
-        public int paddingRight = 0;
-        public int paddingBottom = 0;
-        public int paddingLeft = 0;
-        public int maxWidth = Integer.MAX_VALUE;
-        public int maxHeight = Integer.MAX_VALUE;
-        public int minWidth = 0;
-        public int minHeight = 0;
-
-        //region Setters
-        public BoxProperties setPadding(int paddingAll) {
-            return setPadding(paddingAll, paddingAll, paddingAll, paddingAll);
-        }
-
-        public BoxProperties setPadding(int paddingVertical, int paddingHorizontal) {
-            return setPadding(paddingVertical, paddingHorizontal, paddingVertical, paddingHorizontal);
-        }
-
-        public BoxProperties setPadding(int paddingTop, int paddingRight, int paddingBottom, int paddingLeft) {
-            this.paddingTop = paddingTop;
-            this.paddingRight = paddingRight;
-            this.paddingBottom = paddingBottom;
-            this.paddingLeft = paddingLeft;
-            return this;
-        }
-
-        public BoxProperties setMaxWidth(int maxWidth) {
-            this.maxWidth = maxWidth;
-            return this;
-        }
-
-        public BoxProperties setMaxHeight(int maxHeight) {
-            this.maxHeight = maxHeight;
-            return this;
-        }
-
-        public BoxProperties setMinWidth(int minWidth) {
-            this.minWidth = minWidth;
-            return this;
-        }
-
-        public BoxProperties setMinHeight(int minHeight) {
-            this.minHeight = minHeight;
-            return this;
-        }
-        //endregion
-    }
 }
