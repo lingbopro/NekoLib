@@ -28,6 +28,7 @@ public class GUIDemoScreen extends NScreen {
         return new Flexbox(Flexbox.FlexDirection.COLUMN)
                 .addChild(
                         new Flexbox()
+                                .wrap(800)
                                 .addChild(new ContentBox()
                                         .padding(10)
                                         .addChild(new Label("NekoLib GUI API Demo")))
@@ -55,7 +56,8 @@ public class GUIDemoScreen extends NScreen {
                                             switch (justifyContent.get()) {
                                                 case FLEX_START -> justifyContent.set(Flexbox.JustifyContent.CENTER);
                                                 case CENTER -> justifyContent.set(Flexbox.JustifyContent.FLEX_END);
-                                                case FLEX_END -> justifyContent.set(Flexbox.JustifyContent.FLEX_START);
+                                                case FLEX_END -> justifyContent.set(Flexbox.JustifyContent.SPACE_BETWEEN);
+                                                case SPACE_BETWEEN -> justifyContent.set(Flexbox.JustifyContent.FLEX_START);
                                             }
                                         }).build()
                                 ))

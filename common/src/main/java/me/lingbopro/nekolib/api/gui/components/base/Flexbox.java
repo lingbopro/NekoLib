@@ -122,6 +122,8 @@ public class Flexbox extends ContainerWidget {
                     default -> startM = 0;
                 }
 
+                int spaceBetweenGap = wrap - prevWrap > 1 ? (containerLengthM - lineLengthM) / (wrap - prevWrap - 1) : 0;
+
                 int lineRelM = startM;
                 for (int i = prevWrap; i < wrap; i++) {
                     ComponentLike child = children.get(i);
@@ -142,6 +144,7 @@ public class Flexbox extends ContainerWidget {
                         child.setY(y + childC);
                     }
                     lineRelM += childLengthM;
+                    if (justifyContent == JustifyContent.SPACE_BETWEEN) lineRelM += spaceBetweenGap;
                 }
                 lineC += lineLengthC + lineGap;
             }
@@ -257,7 +260,7 @@ public class Flexbox extends ContainerWidget {
         FLEX_START,
         FLEX_END,
         CENTER,
-        // SPACE_BETWEEN,
+        SPACE_BETWEEN,
         // SPACE_AROUND,
         // SPACE_EVENLY
     }
