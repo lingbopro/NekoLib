@@ -114,11 +114,13 @@ public class ContentBox extends ContainerWidget {
     @Override
     public void setX(int x) {
         this.x = x;
+        needsRelayout = true;
     }
 
     @Override
     public void setY(int y) {
         this.y = y;
+        needsRelayout = true;
     }
     //endregion
 

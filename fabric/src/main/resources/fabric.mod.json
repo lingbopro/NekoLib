@@ -34,5 +34,7 @@
     "architectury": ">=19.0.1",
     "fabric-api": "*"
   },
-  "suggests": {}
+  "suggests": {
+    "modmenu": "*"
+  }
 }

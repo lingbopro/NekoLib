@@ -19,6 +19,8 @@ public class GUIDemoScreen extends NScreen {
 
     private final State<Boolean> clamp = useState(false);
     private final State<Flexbox.FlexDirection> direction = useState(Flexbox.FlexDirection.ROW);
+    private final State<Flexbox.AlignItems> alignItems = useState(Flexbox.AlignItems.FLEX_START);
+    private final State<Flexbox.JustifyContent> justifyContent = useState(Flexbox.JustifyContent.FLEX_START);
     private final State<Integer> count = useState(0);
 
     @Override
@@ -40,6 +42,24 @@ public class GUIDemoScreen extends NScreen {
                                         }).build()
                                 ))
                                 .addChild(new NativeWrap<>(
+                                        Button.builder(Component.literal("Toggle AlignItems"), button -> {
+                                            switch (alignItems.get()) {
+                                                case FLEX_START -> alignItems.set(Flexbox.AlignItems.CENTER);
+                                                case CENTER -> alignItems.set(Flexbox.AlignItems.FLEX_END);
+                                                case FLEX_END -> alignItems.set(Flexbox.AlignItems.FLEX_START);
+                                            }
+                                        }).build()
+                                ))
+                                .addChild(new NativeWrap<>(
+                                        Button.builder(Component.literal("Toggle JustifyContent"), button -> {
+                                            switch (justifyContent.get()) {
+                                                case FLEX_START -> justifyContent.set(Flexbox.JustifyContent.CENTER);
+                                                case CENTER -> justifyContent.set(Flexbox.JustifyContent.FLEX_END);
+                                                case FLEX_END -> justifyContent.set(Flexbox.JustifyContent.FLEX_START);
+                                            }
+                                        }).build()
+                                ))
+                                .addChild(new NativeWrap<>(
                                         Button.builder(Component.literal("Count: " + count.get()), button -> {
                                             count.set(count.get() + 1);
                                         }).build()
@@ -49,28 +69,49 @@ public class GUIDemoScreen extends NScreen {
                         .padding(10)
                         .maxWidth(clamp.get() ? 250 : Integer.MAX_VALUE)
                         .addChild(new Flexbox(direction.get())
+                                .alignItems(alignItems.get())
+                                .justifyContent(justifyContent.get())
+                                .wrap(500)
                                 .addChild(new NativeWrap<>(
                                         Button.builder(Component.literal("Button 1"), button -> {
-                                        }).build()))
+                                        }).size(100, 40).build()))
                                 .addChild(new NativeWrap<>(
                                         Button.builder(Component.literal("Button 2"), button -> {
                                         }).build()))
                                 .addChild(new NativeWrap<>(
                                         Button.builder(Component.literal("Button 3"), button -> {
+                                        }).size(80, 60).build()))
+                                .addChild(new NativeWrap<>(
+                                        Button.builder(Component.literal("Button 4"), button -> {
+                                        }).size(100, 40).build()))
+                                .addChild(new NativeWrap<>(
+                                        Button.builder(Component.literal("Button 5"), button -> {
                                         }).build()))
+                                .addChild(new NativeWrap<>(
+                                        Button.builder(Component.literal("Button 6"), button -> {
+                                        }).size(80, 60).build()))
+                                .addChild(new NativeWrap<>(
+                                        Button.builder(Component.literal("Button 7"), button -> {
+                                        }).size(100, 40).build()))
+                                .addChild(new NativeWrap<>(
+                                        Button.builder(Component.literal("Button 8"), button -> {
+                                        }).build()))
+                                .addChild(new NativeWrap<>(
+                                        Button.builder(Component.literal("Button 9"), button -> {
+                                        }).size(80, 60).build()))
                         ))
                 .addChild(new ContentBox()
                         .padding(10)
                         .maxHeight(clamp.get() ? 20 : Integer.MAX_VALUE)
                         .addChild(new Flexbox()
                                 .addChild(new NativeWrap<>(
-                                        Button.builder(Component.literal("Button 4"), button -> {
+                                        Button.builder(Component.literal("Button 10"), button -> {
                                         }).build()))
                                 .addChild(new NativeWrap<>(
-                                        Button.builder(Component.literal("Button 5"), button -> {
+                                        Button.builder(Component.literal("Button 11"), button -> {
                                         }).build()))
                                 .addChild(new NativeWrap<>(
-                                        Button.builder(Component.literal("Button 6"), button -> {
+                                        Button.builder(Component.literal("Button 12"), button -> {
                                         }).build()))
                         ));
     }
